@@ -2,19 +2,22 @@ name: Release
 
 on: workflow_dispatch
 
+env:
+  BASE_REPO: intellecta-lk/intellecta
+
 jobs:
   get-version:
     name: semantic-release
     runs-on: ubuntu-latest
     outputs:
       new-release-published: ${{ steps.semantic-release.outputs.new_release_published }}
-      new-release-version: ${{ steps.semantic-release.outputs.new_release_version }}
+      new-release-version: v${{ steps.semantic-release.outputs.new_release_version }}
       new-release-channel: ${{ steps.semantic-release.outputs.new_release_channel }}
       new_release_notes:  ${{ steps.semantic-release.outputs.new_release_channel }}
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'intellecta-lk/intellecta'
+          repository: ${{ env.BASE_REPO }}
           token: ${{secrets.PRIVATE_TOKEN}}
       - id: semantic-release
         uses: cycjimmy/semantic-release-action@v4
@@ -22,7 +25,6 @@ jobs:
           branch: main
           working_directory: app
           # dry_run: true
-          tag_format: v${version}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: echo "${{ steps.semantic-release.outputs.new_release_version }}"
@@ -80,8 +82,8 @@ jobs:
     steps:
       - run: |
           gh release delete ${{ needs.get-version.outputs.new-release-version }}  \
-          -R https://github.com/intellecta-lk/intellecta \
-          --cleanup-tag
+          -R https://github.com/${{ env.BASE_REPO }} \
+          --cleanup-tag 2> /dev/null
         env:
           GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
           
