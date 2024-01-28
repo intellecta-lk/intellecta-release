@@ -1,0 +1,24 @@
+name: Release
+
+on: workflow_dispatch
+
+jobs:
+  release:
+    name: semantic-release
+    runs-on: ubuntu-latest
+    outputs:
+      new-release-published: ${{ steps.semantic-release.outputs.new_release_published }}
+      new-release-version: ${{ steps.semantic-release.outputs.new_release_version }}
+      new-release-channel: ${{ steps.semantic-release.outputs.new_release_channel }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'intellecta-lk/intellecta'
+          token: ${{secrets.PRivATE_TOKEN}}
+      - id: semantic-release
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          dry_run: true
+          tag_format: v${version}
+      
+    
