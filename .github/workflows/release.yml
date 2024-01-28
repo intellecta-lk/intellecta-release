@@ -15,8 +15,6 @@ jobs:
         with:
           repository: 'intellecta-lk/intellecta'
           token: ${{secrets.PRIVATE_TOKEN}}
-      - run: ls -la
-      - run: rm -rf app/.releaserc
       - id: semantic-release
         uses: cycjimmy/semantic-release-action@v4
         with:
