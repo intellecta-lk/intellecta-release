@@ -58,8 +58,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: | 
-          gh release create ${{ steps.semantic-release.outputs.new_release_version }}  Release.txt \ 
-          -R https://github.com/${{github.repository}} 
+          gh release create ${{ jobs.get-version.outputs.new_release_version }}  Release.txt \ 
+          -R https://github.com/${{github.repository}} \
+          
 
       
     
