@@ -39,7 +39,9 @@ jobs:
     if: needs.get-version.outputs.new-release-published == 'true'
     steps:
       - name: Build
-        run: echo ${{ github.sha }} > Release.txt
+        run: |
+          touch Release.txt
+          echo ${{ github.sha }} > Release.txt
       - name: Test
         run: cat Release.txt
       # - name: Create tag
