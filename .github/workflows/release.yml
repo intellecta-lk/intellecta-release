@@ -22,32 +22,32 @@ jobs:
         with:
           branch: main
           working_directory: app
-          dry_run: true
+          # dry_run: true
           tag_format: v${version}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build:
-    runs-on: ubuntu-latest
-    needs: release-dry
-    if: needs.release.outputs.new-release-published == 'true'
-    steps:
-      - run: touch test.txt
+  # build:
+  #   runs-on: ubuntu-latest
+  #   needs: release-dry
+  #   if: needs.release.outputs.new-release-published == 'true'
+  #   steps:
+  #     - run: touch test.txt
 
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    if: needs.release.outputs.new-release-published == 'true'
-    steps:
-      - name: Build
-        run: echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            Release.txt
+  # release:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: needs.release.outputs.new-release-published == 'true'
+  #   steps:
+  #     - name: Build
+  #       run: echo ${{ github.sha }} > Release.txt
+  #     - name: Test
+  #       run: cat Release.txt
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         files: |
+  #           Release.txt
 
       
     
