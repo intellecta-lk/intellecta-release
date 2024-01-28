@@ -25,45 +25,46 @@ jobs:
           tag_format: v${version}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "${{ steps.semantic-release.outputs.new_release_version }}"
 
-  build:
-    runs-on: ubuntu-latest
-    needs: get-version
-    if: needs.get-version.outputs.new-release-published == 'true'
-    steps:
-      - run: touch test.txt
+  # build:
+  #   runs-on: ubuntu-latest
+  #   needs: get-version
+  #   if: needs.get-version.outputs.new-release-published == 'true'
+  #   steps:
+  #     - run: touch test.txt
 
-  release:
-    runs-on: ubuntu-latest
-    needs: 
-      - build
-      - get-version
-    if: needs.get-version.outputs.new-release-published == 'true'
-    steps:
-      - name: Build
-        run: |
-          touch Release.txt
-          echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
-      # - name: Create tag
-      #   run: git tag ${{ steps.semantic-release.outputs.new_release_version }}
-      - name: Release
-        # uses: softprops/action-gh-release@v1
-        # with:
-        #   tag_name: ${{ steps.semantic-release.outputs.new_release_version }}
-        #   body: ${{ needs.get-version.outputs.new-release-notes }}
-        #   files: |
-        #     Release.txt
-        # env:
-        #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: echo "${{ needs.get-version.outputs.new_release_version }}"
-      - run: | 
-          gh release create ${{ needs.get-version.outputs.new_release_version }}  \ 
-           Release.txt \
-          -R https://github.com/${{github.repository}} \
+  # release:
+  #   runs-on: ubuntu-latest
+  #   needs: 
+  #     - build
+  #     - get-version
+  #   if: needs.get-version.outputs.new-release-published == 'true'
+  #   steps:
+  #     - name: Build
+  #       run: |
+  #         touch Release.txt
+  #         echo ${{ github.sha }} > Release.txt
+  #     - name: Test
+  #       run: cat Release.txt
+  #     # - name: Create tag
+  #     #   run: git tag ${{ steps.semantic-release.outputs.new_release_version }}
+  #     - name: Release
+  #       # uses: softprops/action-gh-release@v1
+  #       # with:
+  #       #   tag_name: ${{ steps.semantic-release.outputs.new_release_version }}
+  #       #   body: ${{ needs.get-version.outputs.new-release-notes }}
+  #       #   files: |
+  #       #     Release.txt
+  #       # env:
+  #       #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+  #       run: echo "${{ needs.get-version.outputs.new_release_version }}"
+  #     - run: | 
+  #         gh release create ${{ needs.get-version.outputs.new_release_version }}  \ 
+  #          Release.txt \
+  #         -R https://github.com/${{github.repository}} \
+  #       env:
+  #         GH_TOKEN: ${{ github.token }}
           
 
       
