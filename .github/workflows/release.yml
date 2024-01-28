@@ -70,7 +70,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
 
-   delete_tag_if_failed:
+  delete_tag_if_failed:
     runs-on: ubuntu-latest
     if: always() && contains(needs.*.result, 'failure')
     steps:
