@@ -21,6 +21,7 @@ jobs:
         uses: cycjimmy/semantic-release-action@v4
         with:
           branch: main
+          working_directory: app
           dry_run: true
           tag_format: v${version}
       
