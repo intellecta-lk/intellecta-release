@@ -67,7 +67,7 @@ jobs:
         #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
         run: echo "${{ needs.get-version.outputs.new-release-version }}"
       - run: | 
-          gh release create ${{ needs.get-version.outputs.new-release-version }}  \ 
+          gh release create ${{ needs.get-version.outputs.new-release_version }}  \ 
            Release.txt \
           -R https://github.com/${{github.repository}} \
         env:
