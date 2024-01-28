@@ -79,6 +79,8 @@ jobs:
     if: always() && contains(needs.*.result, 'failure')
     steps:
       - run: gh release delete ${{ needs.get-version.outputs.new-release-version }} --cleanup-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
           
 
       
