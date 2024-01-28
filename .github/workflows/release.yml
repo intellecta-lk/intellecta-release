@@ -83,7 +83,7 @@ jobs:
       - run: |
           gh release delete ${{ needs.get-version.outputs.new-release-version }}  \
           -R https://github.com/${{ env.BASE_REPO }} \
-          --cleanup-tag 2> /dev/null
+          --cleanup-tag 
         env:
           GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
           
