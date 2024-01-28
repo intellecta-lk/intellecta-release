@@ -32,39 +32,46 @@ jobs:
     needs: get-version
     if: needs.get-version.outputs.new-release-published == 'true'
     steps:
-      - run: echo "${{ needs.get-version.outputs.new_release_version }}"
+      - run: echo "${{ needs.get-version.outputs.new-release-version }}"
 
-  # release:
-  #   runs-on: ubuntu-latest
-  #   needs: 
-  #     - build
-  #     - get-version
-  #   if: needs.get-version.outputs.new-release-published == 'true'
-  #   steps:
-  #     - name: Build
-  #       run: |
-  #         touch Release.txt
-  #         echo ${{ github.sha }} > Release.txt
-  #     - name: Test
-  #       run: cat Release.txt
-  #     # - name: Create tag
-  #     #   run: git tag ${{ steps.semantic-release.outputs.new_release_version }}
-  #     - name: Release
-  #       # uses: softprops/action-gh-release@v1
-  #       # with:
-  #       #   tag_name: ${{ steps.semantic-release.outputs.new_release_version }}
-  #       #   body: ${{ needs.get-version.outputs.new-release-notes }}
-  #       #   files: |
-  #       #     Release.txt
-  #       # env:
-  #       #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
-  #       run: echo "${{ needs.get-version.outputs.new_release_version }}"
-  #     - run: | 
-  #         gh release create ${{ needs.get-version.outputs.new_release_version }}  \ 
-  #          Release.txt \
-  #         -R https://github.com/${{github.repository}} \
-  #       env:
-  #         GH_TOKEN: ${{ github.token }}
+  delete_tag_if_failed:
+    runs-on: ubuntu-latest
+    if: always() && failure()
+    steps:
+      - run: gh release delete ${{ needs.get-version.outputs.new-release-version }} --cleanup-tag
+    
+
+  release:
+    runs-on: ubuntu-latest
+    needs: 
+      - build
+      - get-version
+    if: needs.get-version.outputs.new-release-published == 'true'
+    steps:
+      - name: Build
+        run: |
+          touch Release.txt
+          echo ${{ github.sha }} > Release.txt
+      - name: Test
+        run: cat Release.txt
+      # - name: Create tag
+      #   run: git tag ${{ steps.semantic-release.outputs.new-release-version }}
+      - name: Release
+        # uses: softprops/action-gh-release@v1
+        # with:
+        #   tag_name: ${{ steps.semantic-release.outputs.new-release-version }}
+        #   body: ${{ needs.get-version.outputs.new-release-notes }}
+        #   files: |
+        #     Release.txt
+        # env:
+        #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+        run: echo "${{ needs.get-version.outputs.new-release-version }}"
+      - run: | 
+          gh release create ${{ needs.get-version.outputs.new-release-version }}  \ 
+           Release.txt \
+          -R https://github.com/${{github.repository}} \
+        env:
+          GH_TOKEN: ${{ github.token }}
           
 
       
