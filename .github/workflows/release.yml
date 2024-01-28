@@ -53,6 +53,8 @@ jobs:
         #     Release.txt
         # env:
         #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: | 
           gh release create ${{ steps.semantic-release.outputs.new_release_version }}  Release.txt \ 
           -R https://github.com/${{github.repository}} 
