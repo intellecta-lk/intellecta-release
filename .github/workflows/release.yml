@@ -20,6 +20,7 @@ jobs:
       - id: semantic-release
         uses: cycjimmy/semantic-release-action@v4
         with:
+          branch: main
           dry_run: true
           tag_format: v${version}
       
