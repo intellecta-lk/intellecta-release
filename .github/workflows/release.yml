@@ -36,7 +36,7 @@ jobs:
 
   delete_tag_if_failed:
     runs-on: ubuntu-latest
-    if: always() && failure()
+    if: always() && contains(needs.*.result, 'failure')
     steps:
       - run: gh release delete ${{ needs.get-version.outputs.new-release-version }} --cleanup-tag
     
