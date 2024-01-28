@@ -42,8 +42,8 @@ jobs:
         run: echo ${{ github.sha }} > Release.txt
       - name: Test
         run: cat Release.txt
-      # - name: Create tag
-      #   run: git tag ${{ steps.semantic-release.outputs.new_release_version }}
+      - name: Create tag
+        run: git tag ${{ steps.semantic-release.outputs.new_release_version }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
