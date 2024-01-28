@@ -10,6 +10,7 @@ jobs:
       new-release-published: ${{ steps.semantic-release.outputs.new_release_published }}
       new-release-version: ${{ steps.semantic-release.outputs.new_release_version }}
       new-release-channel: ${{ steps.semantic-release.outputs.new_release_channel }}
+      new_release_notes:  ${{ steps.semantic-release.outputs.new_release_channel }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,6 +45,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          body: ${{ needs.get-version.outputs.new-release-notes }}
           files: |
             Release.txt
 
