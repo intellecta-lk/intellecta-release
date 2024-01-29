@@ -70,15 +70,15 @@ jobs:
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \ 
           --notes ${{ needs.get-version.outputs.new-release-notes }} \
-          ./Release.txt \
-          -R https://github.com/${{ env.BASE_REPO }} 
+          -R https://github.com/${{ env.BASE_REPO }} \
+          ./Release.txt 
         env:
           GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \ 
           --notes ${{ needs.get-version.outputs.new-release-notes }} \
-          ./Release.txt \
-          -R https://github.com/${{github.repository}} 
+          -R https://github.com/${{github.repository}} \ 
+          ./Release.txt 
         env:
           GH_TOKEN: ${{ github.token }}
           
