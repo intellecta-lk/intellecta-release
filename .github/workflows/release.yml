@@ -67,12 +67,7 @@ jobs:
       #     -R https://github.com/${{github.repository}} \
       #   env:
       #     GH_TOKEN: ${{ github.token }}
-      - run: |
-          gh release create ${{ needs.get-version.outputs.new-release-version }}  
-          ./Release.txt 
-          -R https://github.com/${{ env.BASE_REPO }} 
-        env:
-          GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+
       # - run: |
       #     gh release create ${{ needs.get-version.outputs.new-release-version }}  \ 
       #     ./Release.txt 
@@ -87,6 +82,12 @@ jobs:
           # token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
         env:
           GITHUB_REPOSITORY: my_gh_org/my_gh_repo
+      - run: |
+          gh release create ${{ needs.get-version.outputs.new-release-version }}  
+          -R https://github.com/${{ env.BASE_REPO }} 
+          ./Release.txt 
+        env:
+          GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
           
 
 
