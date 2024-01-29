@@ -46,6 +46,7 @@ jobs:
       - get-version
     if: needs.get-version.outputs.new-release-published == 'true'
     steps:
+      - uses: actions/checkout@v4
       - name: Build
         run: |
           touch Release.txt
@@ -75,19 +76,12 @@ jobs:
       #   env:
       #     GH_TOKEN: ${{ github.token }}
       - run: |
-          gh release create ${{ needs.get-version.outputs.new-release-version }}  
-          -R https://github.com/${{ env.BASE_REPO }} 
-          ./Release.txt 
+          gh release create ${{ needs.get-version.outputs.new-release-version }}  \
+          -R https://github.com/${{ env.BASE_REPO }} \
+          -- Release.txt 
         env:
           GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-           Release.txt
-          # token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-        # env:
-        #   GITHUB_REPOSITORY: my_gh_org/my_gh_repo
+ 
           
 
 
