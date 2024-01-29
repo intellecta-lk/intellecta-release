@@ -13,7 +13,7 @@ jobs:
       new-release-published: ${{ steps.semantic-release.outputs.new_release_published }}
       new-release-version: v${{ steps.semantic-release.outputs.new_release_version }}
       new-release-channel: ${{ steps.semantic-release.outputs.new_release_channel }}
-      new_release_notes:  ${{ steps.semantic-release.outputs.new_release_channel }}
+      new-release-notes:  ${{ steps.semantic-release.outputs.new_release_channel }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -64,9 +64,16 @@ jobs:
         # env:
         #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
         run: echo "${{ needs.get-version.outputs.new-release-version }}"
+      - run: |
+         gh release upload ${{ needs.get-version.outputs.new-release_version }}  \ 
+              Release.txt \
+          -R https://github.com/${{github.repository}} \
+        env:
+          GH_TOKEN: ${{ github.token }}
       - run: | 
-          gh release create ${{ needs.get-version.outputs.new-release_version }}  \ 
-           Release.txt \
+          gh release edit ${{ needs.get-version.outputs.new-release-version }}  \ 
+          --draft=false \
+          --notes ${{ needs.get-version.outputs.new-release-notes }} \
           -R https://github.com/${{github.repository}} \
         env:
           GH_TOKEN: ${{ github.token }}
@@ -80,14 +87,14 @@ jobs:
        - release
     if: always() && contains(needs.*.result, 'failure')
     steps:
-      # - run: |
-      #     gh release delete ${{ needs.get-version.outputs.new-release-version }}  \
-      #     -R https://github.com/${{ env.BASE_REPO }} \
-      #      --cleanup-tag 
-      #    env:
-      #     GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
       - run: |
-          git push --delete https://${{secrets.PRIVATE_TOKEN}}@github.com/${{ env.BASE_REPO }} YOUR_TAG_NAME
+          gh release delete ${{ needs.get-version.outputs.new-release-version }}  \
+          -R https://github.com/${{ env.BASE_REPO }} \
+           --cleanup-tag 
+        env:
+          GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+      # - run: |
+      #     git push --delete https://${{secrets.PRIVATE_TOKEN}}@github.com/${{ env.BASE_REPO }} YOUR_TAG_NAME
      
           
 
