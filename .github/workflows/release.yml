@@ -24,10 +24,9 @@ jobs:
         with:
           branch: main
           working_directory: app
-          # dry_run: true
         env:
           GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
-      - run: echo "${{ steps.semantic-release.outputs.new_release_version }}"
+ 
 
   build:
     runs-on: ubuntu-latest
@@ -53,30 +52,6 @@ jobs:
         run: |
           touch Release.txt
           echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
-      - name: Release
-        run: echo "${{ needs.get-version.outputs.new-release-version }}"
-      # - run: |
-      #    gh release upload ${{ needs.get-version.outputs.new-release_version }}  \ 
-      #         Release.txt \
-      #     -R https://github.com/${{github.repository}} \
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
-      # - run: | 
-      #     gh release edit ${{ needs.get-version.outputs.new-release-version }}  \ 
-      #     --draft=false \
-      #     --notes ${{ needs.get-version.outputs.new-release-notes }} \
-      #     -R https://github.com/${{github.repository}} \
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
-
-      # - run: |
-      #     gh release create ${{ needs.get-version.outputs.new-release-version }}  \ 
-      #     ./Release.txt 
-      #     -R https://github.com/${{github.repository}} 
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \
           -R https://github.com/${{github.repository}}  \
@@ -87,7 +62,7 @@ jobs:
           
 
 
-  delete_tag_if_failed:
+  delete_release_if_failed:
     runs-on: ubuntu-latest
     needs: 
        - build
@@ -101,8 +76,7 @@ jobs:
            --cleanup-tag 
         env:
           GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
-      # - run: |
-      #     git push --delete https://${{secrets.PRIVATE_TOKEN}}@github.com/${{ env.BASE_REPO }} YOUR_TAG_NAME
+
      
           
 
