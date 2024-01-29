@@ -77,10 +77,10 @@ jobs:
       #     GH_TOKEN: ${{ github.token }}
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \
-          -R https://github.com/${{ env.BASE_REPO }} \
+          -R https://github.com/${{github.repository}}  \
           -- Release.txt 
         env:
-          GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+          GH_TOKEN: ${{ github.token }}
  
           
 
