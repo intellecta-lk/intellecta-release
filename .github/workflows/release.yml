@@ -74,20 +74,20 @@ jobs:
       #     -R https://github.com/${{github.repository}} 
       #   env:
       #     GH_TOKEN: ${{ github.token }}
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-           Release.txt
-          # token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-        env:
-          GITHUB_REPOSITORY: my_gh_org/my_gh_repo
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  
           -R https://github.com/${{ env.BASE_REPO }} 
           ./Release.txt 
         env:
           GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+           Release.txt
+          # token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+        # env:
+        #   GITHUB_REPOSITORY: my_gh_org/my_gh_repo
           
 
 
