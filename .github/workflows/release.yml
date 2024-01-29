@@ -26,7 +26,7 @@ jobs:
           working_directory: app
           # dry_run: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
       - run: echo "${{ steps.semantic-release.outputs.new_release_version }}"
 
   build:
