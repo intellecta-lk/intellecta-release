@@ -91,22 +91,22 @@ jobs:
           
 
 
-  # delete_tag_if_failed:
-  #   runs-on: ubuntu-latest
-  #   needs: 
-  #      - build
-  #      - get-version
-  #      - release
-  #   if: always() && contains(needs.*.result, 'failure')
-  #   steps:
-  #     - run: |
-  #         gh release delete ${{ needs.get-version.outputs.new-release-version }}  \
-  #         -R https://github.com/${{ env.BASE_REPO }} \
-  #          --cleanup-tag 
-  #       env:
-  #         GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
-  #     # - run: |
-  #     #     git push --delete https://${{secrets.PRIVATE_TOKEN}}@github.com/${{ env.BASE_REPO }} YOUR_TAG_NAME
+  delete_tag_if_failed:
+    runs-on: ubuntu-latest
+    needs: 
+       - build
+       - get-version
+       - release
+    if: always() && contains(needs.*.result, 'failure')
+    steps:
+      - run: |
+          gh release delete ${{ needs.get-version.outputs.new-release-version }}  \
+          -R https://github.com/${{ env.BASE_REPO }} \
+           --cleanup-tag 
+        env:
+          GH_TOKEN: ${{secrets.PRIVATE_TOKEN}}
+      # - run: |
+      #     git push --delete https://${{secrets.PRIVATE_TOKEN}}@github.com/${{ env.BASE_REPO }} YOUR_TAG_NAME
      
           
 
