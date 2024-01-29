@@ -52,17 +52,7 @@ jobs:
           echo ${{ github.sha }} > Release.txt
       - name: Test
         run: cat Release.txt
-      # - name: Create tag
-      #   run: git tag ${{ steps.semantic-release.outputs.new-release-version }}
       - name: Release
-        # uses: softprops/action-gh-release@v1
-        # with:
-        #   tag_name: ${{ steps.semantic-release.outputs.new-release-version }}
-        #   body: ${{ needs.get-version.outputs.new-release-notes }}
-        #   files: |
-        #     Release.txt
-        # env:
-        #   GITHUB_TOKEN: ${{secrets.PRIVATE_TOKEN}}
         run: echo "${{ needs.get-version.outputs.new-release-version }}"
       # - run: |
       #    gh release upload ${{ needs.get-version.outputs.new-release_version }}  \ 
@@ -80,7 +70,7 @@ jobs:
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \ 
           --notes ${{ needs.get-version.outputs.new-release-notes }} \
-          '/Release.txt#My display label' \
+          'Release.txt#My display label' \
           -R https://github.com/${{github.repository}} 
         env:
           GH_TOKEN: ${{ github.token }}
