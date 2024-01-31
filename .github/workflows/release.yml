@@ -29,11 +29,27 @@ jobs:
  
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: get-version
     if: needs.get-version.outputs.new-release-published == 'true'
     steps:
-      - run: echo "${{ needs.get-version.outputs.new-release-version }}"
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.BASE_REPO }}
+          token: ${{secrets.PRIVATE_TOKEN}}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn workspace app build:electron
+      - run: yarn workspace app pack:electron
+      - uses: actions/cache@v3
+        with:
+          path: |
+            app/artifacts/*.*
+          key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
 
  
     
@@ -47,15 +63,18 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Build
-        run: |
-          touch Release.txt
-          echo ${{ github.sha }} > Release.txt
+      - uses: actions/cache/restore@v3
+        id: cache
+        with:
+          path: ${{ process.cwd() }}
+          key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Check cache hit
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: exit 1
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \
           -R https://github.com/${{github.repository}}  \
-          -- Release.txt 
+          -- *.*
         env:
           GH_TOKEN: ${{ github.token }}
  
