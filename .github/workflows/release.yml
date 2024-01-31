@@ -46,6 +46,7 @@ jobs:
       - name: Bump up version
         uses: jaywcjlove/github-action-package@main
         with:
+          path: app/package.json
           version: ${{ needs.get-version.outputs.new-release-version }} 
       - run: yarn workspace app build:electron
       - run: yarn workspace app pack:electron
@@ -73,8 +74,6 @@ jobs:
         with:
           path: ${{ github.workspace }}
           key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
-          fail-on-cache-miss: true
-          enableCrossOsArchive: true
       - run: ls -la
 
       - run: |
