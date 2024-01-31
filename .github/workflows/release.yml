@@ -43,6 +43,7 @@ jobs:
           node-version: 18
           cache: 'yarn'
       - run: yarn install
+      - run: npm version ${{ needs.get-version.outputs.new-release-version }}
       - run: yarn workspace app build:electron
       - run: yarn workspace app pack:electron
       - uses: actions/cache@v3
