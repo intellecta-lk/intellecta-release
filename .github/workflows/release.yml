@@ -70,6 +70,8 @@ jobs:
           path: ${{ github.workspace }}
           key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           fail-on-cache-miss: true
+          enableCrossOsArchive: true
+
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \
           -R https://github.com/${{github.repository}}  \
