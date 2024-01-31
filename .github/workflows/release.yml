@@ -50,6 +50,7 @@ jobs:
           path: |
             app/artifacts/*.*
           key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+          enableCrossOsArchive: true
 
  
     
@@ -68,9 +69,7 @@ jobs:
         with:
           path: ${{ github.workspace }}
           key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
-      - name: Check cache hit
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: exit 1
+          fail-on-cache-miss: true
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \
           -R https://github.com/${{github.repository}}  \
