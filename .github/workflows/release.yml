@@ -64,13 +64,14 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/cache/restore@v3
+      - uses:  actions/cache@v3
         id: cache
         with:
           path: ${{ github.workspace }}
           key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           fail-on-cache-miss: true
           enableCrossOsArchive: true
+      - run: ls -la
 
       - run: |
           gh release create ${{ needs.get-version.outputs.new-release-version }}  \
