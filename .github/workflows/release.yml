@@ -18,7 +18,6 @@ jobs:
         with:
           repository: ${{ env.BASE_REPO }}
           token: ${{secrets.PRIVATE_TOKEN}}
-          ref: main
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
