@@ -66,19 +66,22 @@ jobs:
       contents: write
     steps:
       - uses:  actions/cache/restore@v4
-        id: cache
         with:
           path: | 
              build/app/outputs/bundle/release/*.aab
-             build/windows/x64/runner/Release/*.exe
           key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
+      - uses:  actions/cache/restore@v4
+        with:
+            path: | 
+               build/windows/x64/runner/Release/*.exe
+            key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+            enableCrossOsArchive: true
       - run: ls -la
-
       - run: |
           gh release create ${{ inputs.version }}  \
           -R https://github.com/${{github.repository}}  \
           -- build/windows/x64/runner/Release/*.exe  \
-             build/app/outputs/bundle/release/*
+             build/app/outputs/bundle/release/*.aab
         env:
           GH_TOKEN: ${{ github.token }}
