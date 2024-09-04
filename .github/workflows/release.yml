@@ -53,8 +53,8 @@ jobs:
       - uses: actions/cache/save@v4
         with:
           path: |
-            build\windows\runner\Release\*.exe
-          key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+            build/windows/runner/Release/*.exe
+          key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
 
   release:
@@ -69,15 +69,15 @@ jobs:
         id: cache
         with:
           path: | 
-             *
-          key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+             build
+          key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
       - run: ls -la
 
       - run: |
           gh release create ${{ inputs.version }}  \
           -R https://github.com/${{github.repository}}  \
-          -- build\windows\runner\Release\*.exe  \
+          -- build/windows/runner/Release/*.exe  \
              build/app/outputs/bundle/release/*
         env:
           GH_TOKEN: ${{ github.token }}
