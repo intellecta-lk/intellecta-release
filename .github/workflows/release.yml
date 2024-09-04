@@ -31,7 +31,7 @@ jobs:
       - uses: actions/cache/save@v4
         with:
           path: |
-            build/app/outputs/bundle/release/*
+            build/app/outputs/bundle/release/*.aab
           key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
 
@@ -69,7 +69,8 @@ jobs:
         id: cache
         with:
           path: | 
-             build/*
+             build/app/outputs/bundle/release/*.aab
+             build/windows/x64/runner/Release/*.exe
           key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
       - run: ls -la
