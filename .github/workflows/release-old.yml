@@ -1,4 +1,4 @@
-name: Release
+name: Release Old
 
 on: workflow_dispatch
 
