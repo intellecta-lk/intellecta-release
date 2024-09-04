@@ -32,7 +32,7 @@ jobs:
         with:
           path: |
             build/app/outputs/bundle/release/*
-          key: electron-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+          key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
 
   
@@ -53,7 +53,7 @@ jobs:
       - uses: actions/cache/save@v4
         with:
           path: |
-            build\\windows\\runner\\Release\\*.exe
+            build/windows/runner/Release/*.exe
           key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
 
