@@ -53,7 +53,7 @@ jobs:
       - uses: actions/cache/save@v4
         with:
           path: |
-            build/windows/runner/Release/*.exe
+            build/windows/x64/runner/Release/*.exe
           key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
 
@@ -77,7 +77,7 @@ jobs:
       - run: |
           gh release create ${{ inputs.version }}  \
           -R https://github.com/${{github.repository}}  \
-          -- build/windows/runner/Release/*.exe  \
+          -- build/windows/x64/runner/Release/*.exe  \
              build/app/outputs/bundle/release/*
         env:
           GH_TOKEN: ${{ github.token }}
