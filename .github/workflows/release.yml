@@ -50,17 +50,19 @@ jobs:
       - run: flutter pub get
       - run: flutter pub upgrade win32
       - run: flutter build windows
-      - uses: actions/upload-artifact@master
-        with:
-          name: windows
-          path: build\windows\runner\Release
+     
       - run: dart run msix:create
       - uses: actions/cache/save@v4
         with:
           path: |
-            build/windows/runner/Release/*.exe
+            build/windows/x64/runner/Release/*.exe
           key: intellecta-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
           enableCrossOsArchive: true
+      - uses: actions/upload-artifact@master
+        with:
+            name: windows
+            # path: build\windows\x64\runner\Release\intellecta.msix
+            path: build\windows\*
 
   # release:
   #   runs-on: ubuntu-latest
